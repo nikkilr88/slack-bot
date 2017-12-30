@@ -12,8 +12,8 @@ module.exports = () => {
     //Listen for key words
     controller.hears(['weather ([0-9]{5})'], ['ambient'], (bot, message) => {
         controller.log('Slack message received');
-        
-        let zip = message.text.split(' ')[1];
+        let zip = message.match[1];
+
         getWeather(zip)
         .then(data => {
             bot.reply(message, `Forecast for ${data.name}: ${data.weather[0].main}, ${Math.round(data.main.temp)}°F`);
