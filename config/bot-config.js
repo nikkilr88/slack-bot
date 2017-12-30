@@ -10,13 +10,17 @@ module.exports = () => {
     });
 
     //Listen for key words
-    controller.hears(['weather'], ['ambient'], (bot, message) => {
+    controller.hears(['weather ([0-9]{5})'], ['ambient'], (bot, message) => {
         controller.log('Slack message received');
-
+        
         let zip = message.text.split(' ')[1];
-        getWeather(zip).then(data => {
+        getWeather(zip)
+        .then(data => {
             bot.reply(message, `Forecast for ${data.name}: ${data.weather[0].main}, ${data.main.temp}°F`);
-        });
+        })
+        .catch(err =>{
+            bot.reply(message, err);
+        }) 
     });
 
     // Use RTM
