@@ -16,7 +16,7 @@ module.exports = () => {
         let zip = message.text.split(' ')[1];
         getWeather(zip)
         .then(data => {
-            bot.reply(message, `Forecast for ${data.name}: ${data.weather[0].main}, ${data.main.temp}°F`);
+            bot.reply(message, `Forecast for ${data.name}: ${data.weather[0].main}, ${Math.round(data.main.temp)}°F`);
         })
         .catch(err =>{
             bot.reply(message, err);
