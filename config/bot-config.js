@@ -25,8 +25,9 @@ module.exports = () => {
     });
 
     //Listen for other commands
-    controller.hears(['weather', 'help'], ['ambient'], (bot, message) => {        
-        if(message.text === 'weather') {
+    controller.hears(['weather', 'help'], ['ambient'], (bot, message) => {  
+        console.log(message)      
+        if (message.match[0] === 'weather') {
             bot.reply(message, 'Did you want the weather? Enter <weather zipcode>.');
         }
         else {
