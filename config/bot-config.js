@@ -18,7 +18,7 @@ module.exports = () => {
 
         getWeather(zip)
         .then(data => {
-            bot.reply(message, `<@${message.user}> Forecast for ${data.name}: ${data.weather[0].main}, ${data.main.temp}°F`);
+            bot.reply(message, `<@${message.user}> Forecast for ${data.name}: ${data.weather[0].main}, ${Math.round(data.main.temp)}°F`);
 
         })
         .catch(err => {
