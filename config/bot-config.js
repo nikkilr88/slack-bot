@@ -1,6 +1,7 @@
-const Botkit = require('botkit');
-const { getWeather } = require('../helpers/functions');
-const { SLACK_TOKEN } = require('../config/keys');
+const Botkit = require('botkit'),
+    { getWeather, getUser } = require('../helpers/functions'),
+    { triggerWords, weatherPattern } = require('./keywords'),
+    { SLACK_TOKEN } = require('./keys');
 
 module.exports = () => {
     let controller = Botkit.slackbot();
@@ -10,23 +11,24 @@ module.exports = () => {
     });
 
     //Listen for weather
-    controller.hears(['weather ([0-9]{5})'], ['ambient'], (bot, message) => {
+    controller.hears(weatherPattern, ['ambient'], (bot, message) => {
         controller.log('Slack message received');
-        
         let zip = message.match[1];
-        
+
+
         getWeather(zip)
         .then(data => {
-            bot.reply(message, `Forecast for ${data.name}: ${data.weather[0].main}, ${data.main.temp}°F`);
+            bot.reply(message, `<@${message.user}> Forecast for ${data.name}: ${data.weather[0].main}, ${data.main.temp}°F`);
+
         })
-        .catch(err =>{
+        .catch(err => {
             bot.reply(message, err);
         });
     });
 
     //Listen for other commands
-    controller.hears(['weather', 'help'], ['ambient'], (bot, message) => {  
-        console.log(message)      
+    controller.hears(triggerWords, ['ambient'], (bot, message) => {
+        console.log(message)
         if (message.match[0] === 'weather') {
             bot.reply(message, 'Did you want the weather? Enter <weather zipcode>.');
         }
